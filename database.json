@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "title": "Luxury Villa Construction",
+    "type": "Residential",
+    "imageUrl": "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80",
+    "description": "Premium modern villa featuring sustainable materials, an infinity pool, and state-of-the-art home automation systems integrated seamlessly."
+  },
+  {
+    "id": "2",
+    "title": "TechHub Office Complex",
+    "type": "Commercial",
+    "imageUrl": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80",
+    "description": "A 15-story commercial office complex designed to foster productivity with open floor plans, green spaces, and high-energy efficiency."
+  },
+  {
+    "id": "3",
+    "title": "Metropolitan Bridge Expansion",
+    "type": "Infrastructure",
+    "imageUrl": "https://images.unsplash.com/photo-1545672239-014c2f4cc145?w=800&q=80",
+    "description": "Critical urban infrastructure project expanding highway capacity over the central river, ensuring smooth daily commutes for thousands."
+  }
+]

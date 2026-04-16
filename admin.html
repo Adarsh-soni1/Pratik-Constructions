@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Pratik Constructions</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <!-- Admin Specific Styles -->
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .admin-main {
+            flex: 1;
+            padding: 120px 20px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            margin: auto;
+        }
+        .dashboard-container {
+            width: 100%;
+            max-width: 1000px;
+            display: none;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        /* Custom scrollbar for project list */
+        .project-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .project-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .project-list::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .admin-project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .admin-project-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .project-info h4 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        .project-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 16px;
+        }
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="glow-bg">
+        <div class="glow blob-1" style="left: -10%; top: -10%;"></div>
+        <div class="glow blob-2" style="right: -10%; bottom: -10%;"></div>
+    </div>
+
+    <!-- Simple Auth Navigation -->
+    <header id="main-header" style="background: rgba(10, 10, 10, 0.8);">
+        <nav class="navbar" style="justify-content: flex-start; gap: 2rem;">
+            <a href="index.html" class="logo" style="text-decoration: none;">
+                <span class="logo-accent">Pratik</span> Constructions
+            </a>
+            <a href="index.html" style="color: var(--text-color); opacity: 0.8; text-decoration: none; font-size: 0.9rem;">&larr; Back to Site</a>
+        </nav>
+    </header>
+
+    <main class="admin-main">
+        <!-- Auth Section -->
+        <div class="glass-container auth-container fade-in" id="auth-section">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
+                <h2>Admin <span class="gradient-text">Login</span></h2>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Authorized personnel only</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <div id="login-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 15px; display: none;">Invalid credentials. Please try again.</div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Access Dashboard</button>
+            </form>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-container fade-in" id="dashboard-section">
+            <div class="dashboard-header">
+                <div>
+                    <h2>Welcome, <span class="gradient-text">Pratik</span></h2>
+                    <p>Manage your portfolio projects securely.</p>
+                </div>
+                <button class="btn btn-outline" id="logout-btn">Logout</button>
+            </div>
+            
+            <div class="admin-grid">
+                <!-- Add New Project Form -->
+                <div class="glass-container" style="padding: 30px;">
+                    <h3 style="margin-bottom: 20px; font-family: 'Outfit', sans-serif;">Add New Project</h3>
+                    <form id="add-project-form">
+                        <div class="form-group">
+                            <label for="proj-title">Project Title</label>
+                            <input type="text" id="proj-title" placeholder="e.g. Skyline Towers" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="proj-type">Category</label>
+                            <select id="proj-type" required style="width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; margin-bottom: 15px; font-family: inherit;">
+                                <option value="Residential" style="background: #111;">Residential</option>
+                                <option value="Commercial" style="background: #111;">Commercial</option>
+                                <option value="Infrastructure" style="background: #111;">Infrastructure</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="proj-image">Image URL (Optional)</label>
+                            <input type="url" id="proj-image" placeholder="https://unsplash.com/... (Image URL)">
+                        </div>
+                        <div class="form-group">
+                            <label for="proj-desc">Short Description</label>
+                            <textarea id="proj-desc" rows="3" placeholder="Brief details about the construction project..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">+ Publish Project</button>
+                    </form>
+                </div>
+                
+                <!-- Manage Existing Projects -->
+                <div class="glass-container" style="padding: 30px; background: rgba(10, 10, 10, 0.6);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="font-family: 'Outfit', sans-serif;">Active Projects</h3>
+                        <span style="background: rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem;" id="admin-project-count">0</span>
+                    </div>
+                    
+                    <div class="project-list" id="admin-project-list">
+                        <!-- Admin projects injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">Action successful!</div>
+
+    <script src="app.js"></script>
+</body>
+</html>
