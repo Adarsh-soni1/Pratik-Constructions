@@ -62,23 +62,23 @@ async function saveProjectsOnServer(projects) {
 async function renderPortfolio() {
     const portfolioGrid = document.getElementById('portfolio-grid');
     const projectCount = document.getElementById('project-count');
-    
+
     if (!portfolioGrid) return;
-    
+
     const projects = await fetchProjects();
-    
+
     // Update simple project counter
     if (projectCount) {
         projectCount.textContent = projects.length;
     }
-    
+
     portfolioGrid.innerHTML = '';
-    
+
     if (projects.length === 0) {
         portfolioGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">More projects coming soon...</p>';
         return;
     }
-    
+
     projects.forEach(project => {
         const card = document.createElement('div');
         card.className = 'project-card fade-in visible';
@@ -99,22 +99,22 @@ async function renderPortfolio() {
 async function renderAdminProjects() {
     const adminList = document.getElementById('admin-project-list');
     const adminCount = document.getElementById('admin-project-count');
-    
+
     if (!adminList) return;
-    
+
     const projects = await fetchProjects();
-    
+
     if (adminCount) {
         adminCount.textContent = projects.length;
     }
-    
+
     adminList.innerHTML = '';
-    
+
     if (projects.length === 0) {
         adminList.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No projects found.</p>';
         return;
     }
-    
+
     projects.forEach(project => {
         const card = document.createElement('div');
         card.className = 'admin-project-card';
@@ -134,7 +134,7 @@ async function renderAdminProjects() {
 // ==========================================
 
 // Delete Project
-window.deleteProject = async function(id) {
+window.deleteProject = async function (id) {
     if (confirm('Are you sure you want to delete this project?')) {
         let projects = await fetchProjects();
         projects = projects.filter(p => p.id !== id);
@@ -149,13 +149,13 @@ const addProjectForm = document.getElementById('add-project-form');
 if (addProjectForm) {
     addProjectForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+
         const title = document.getElementById('proj-title').value;
         const type = document.getElementById('proj-type').value;
         const description = document.getElementById('proj-desc').value;
         const imageUrlInput = document.getElementById('proj-image');
         const imageUrl = imageUrlInput ? imageUrlInput.value : '';
-        
+
         const projects = await fetchProjects();
         const newProject = {
             id: Date.now().toString(),
@@ -164,10 +164,10 @@ if (addProjectForm) {
             imageUrl,
             description
         };
-        
+
         projects.unshift(newProject);
         await saveProjectsOnServer(projects);
-        
+
         await renderAdminProjects();
         addProjectForm.reset();
         showToast('Project added successfully!');
@@ -198,7 +198,7 @@ if (loginForm) {
         e.preventDefault();
         const user = document.getElementById('username').value;
         const pass = document.getElementById('password').value;
-        
+
         // Simple hardcoded auth for prototype
         if (user === 'pratikconstructions11' && pass === 'jagirdar') {
             sessionStorage.setItem('pratik_admin_auth', 'true');
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Reveal animations
     const fadeElements = document.querySelectorAll('.fade-in');
     fadeElements.forEach(el => observer.observe(el));
-    
+
     // Header styling on scroll
     const header = document.getElementById('main-header');
     if (header) {
@@ -283,10 +283,10 @@ if (submitContact && contactForm) {
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const msg = document.getElementById('message').value;
-            
+
             fetch("https://formsubmit.co/ajax/addys1111a@gmail.com", {
                 method: "POST",
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
@@ -297,19 +297,19 @@ if (submitContact && contactForm) {
                     _captcha: "false"
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                showToast('Message sent! Pratik will contact you shortly.');
-                contactForm.reset();
-            })
-            .catch(error => {
-                console.error(error);
-                showToast('Error sending message. Please try again.');
-            })
-            .finally(() => {
-                submitContact.textContent = 'Send Message';
-                submitContact.disabled = false;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    showToast('Message sent! Pratik will contact you shortly.');
+                    contactForm.reset();
+                })
+                .catch(error => {
+                    console.error(error);
+                    showToast('Error sending message. Please try again.');
+                })
+                .finally(() => {
+                    submitContact.textContent = 'Send Message';
+                    submitContact.disabled = false;
+                });
         } else {
             contactForm.reportValidity();
         }
