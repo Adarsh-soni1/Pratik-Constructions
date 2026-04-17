@@ -315,3 +315,23 @@ if (submitContact && contactForm) {
         }
     });
 }
+
+// Mobile Menu Toggle Logic
+const mobileBtn = document.getElementById('mobile-menu-btn');
+const navLinks = document.getElementById('nav-links');
+
+if (mobileBtn && navLinks) {
+    mobileBtn.addEventListener('click', () => {
+        mobileBtn.classList.toggle('open');
+        navLinks.classList.toggle('active');
+    });
+
+    // Close menu when clicking a link
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileBtn.classList.remove('open');
+            navLinks.classList.remove('active');
+        });
+    });
+}
