@@ -271,15 +271,45 @@ document.addEventListener('DOMContentLoaded', () => {
     checkAuthStatus();
 });
 
-// Mock submission for public contact form
+// Silent Background Submission via FormSubmit
 const contactForm = document.getElementById('contact-form');
 const submitContact = document.getElementById('submit-contact');
 if (submitContact && contactForm) {
     submitContact.addEventListener('click', () => {
         if (contactForm.checkValidity()) {
-            // Usually this would go to a backend
-            showToast('Thank you for reaching out! Pratik will contact you shortly.');
-            contactForm.reset();
+            submitContact.textContent = 'Sending...';
+            submitContact.disabled = true;
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const msg = document.getElementById('message').value;
+            
+            fetch("https://formsubmit.co/ajax/addys1111a@gmail.com", {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    message: msg,
+                    _captcha: "false"
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                showToast('Message sent! Pratik will contact you shortly.');
+                contactForm.reset();
+            })
+            .catch(error => {
+                console.error(error);
+                showToast('Error sending message. Please try again.');
+            })
+            .finally(() => {
+                submitContact.textContent = 'Send Message';
+                submitContact.disabled = false;
+            });
         } else {
             contactForm.reportValidity();
         }
